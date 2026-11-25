@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>CBT Ujian Informatika Kelas XI</title>
+<style>
+  :root {
+    --primary: #1e3a8a;
+    --primary-light: #2563eb;
+    --primary-bg: #eff6ff;
+    --success: #15803d;
+    --success-bg: #dcfce7;
+    --danger: #b91c1c;
+    --danger-bg: #fee2e2;
+    --warning: #b45309;
+    --warning-bg: #fef3c7;
+    --dark: #0f172a;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #cbd5e1;
+    --bg: #f1f5f9;
+    --white: #ffffff;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  input, select {
+    -webkit-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
+    user-select: auto;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+  }
+
+  /* LOCK OVERLAY */
+  #lockOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.96);
+    backdrop-filter: blur(8px);
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .lock-card {
+    background: var(--white);
+    max-width: 440px;
+    width: 100%;
+    border-radius: 16px;
+    padding: 28px 24px;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    border-top: 6px solid var(--danger);
+  }
+
+  .lock-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background: var(--danger-bg);
+    color: var(--danger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+  .lock-card h2 {
+    margin: 0 0 8px;
+    color: var(--danger);
+    font-size: 1.3rem;
+  }
+
+  .lock-card p {
+    margin: 0 0 16px;
+    font-size: 0.94rem;
+    color: var(--text);
+  }
+
+  .lock-badge {
+    display: inline-block;
+    background: var(--warning-bg);
+    color: var(--warning);
+    font-weight: 600;
+    font-size: 0.82rem;
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+
+  .lock-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-size: 1rem;
+    text-align: center;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    outline: none;
+  }
+
+  .lock-input:focus {
+    border-color: var(--primary-light);
+  }
+
+  .lock-error {
+    color: var(--danger);
+    font-size: 0.85rem;
+    font-weight: 600;
+    min-height: 20px;
+    margin-bottom: 10px;
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: var(--white);
+  }
+
+  .btn-primary:hover {
+    background: var(--primary-light);
+  }
+
+  .btn-danger {
+    background: var(--danger);
+    color: var(--white);
+  }
+
+  .btn-danger:hover {
+    background: #991b1b;
+  }
+
+  .btn-success {
+    background: var(--success);
+    color: var(--white);
+  }
+
+  .btn-success:hover {
+    background: #166534;
+  }
+
+  .btn-warning {
+    background: #f59e0b;
+    color: #1e293b;
+  }
+
+  .btn-outline {
+    background: var(--white);
+    color: var(--text);
+    border: 1.5px solid var(--border);
+  }
+
+  .btn-outline:hover {
+    background: #f8fafc;
+  }
+
+  .btn-full {
+    width: 100%;
+  }
+
+  /* LOGIN / START SCREEN */
+  .container-center {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .start-card {
+    background: var(--white);
+    max-width: 540px;
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08);
+    border: 1px solid #e2e8f0;
+  }
+
+  .start-header {
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    color: var(--white);
+    padding: 24px;
+    text-align: center;
+  }
+
+  .start-header h1 {
+    margin: 0 0 6px;
+    font-size: 1.35rem;
+  }
+
+  .start-header p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+
+  .start-body {
+    padding: 24px;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    outline: none;
+    background: var(--white);
+  }
+
+  .form-control:focus {
+    border-color: var(--primary-light);
+  }
+
+  .rules-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 0.87rem;
+  }
+
+  .rules-box strong {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--primary);
+  }
+
+  .rules-box ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  .rules-box li {
+    margin-bottom: 4px;
+  }
+
+  /* EXAM LAYOUT */
+  #examScreen {
+    display: none;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  .topbar {
+    background: var(--primary);
+    color: var(--white);
+    padding: 12px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
+
+  .topbar-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar-title {
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .topbar-sub {
+    font-size: 0.82rem;
+    opacity: 0.9;
+  }
+
+  .topbar-stats {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .pill {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    background: rgba(255,255,255,0.15);
+  }
+
+  .pill-timer {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
+  .pill-warn {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  .exam-main {
+    max-width: 1180px;
+    width: 100%;
+    margin: 20px auto;
+    padding: 0 16px;
+    display: grid;
+    grid-template-columns: 1fr 310px;
+    gap: 20px;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .exam-main {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .question-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    border: 1px solid #e2e8f0;
+  }
+
+  .q-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .q-badge {
+    background: var(--primary-bg);
+    color: var(--primary);
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+
+  .q-type {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .q-text {
+    font-size: 1.03rem;
+    margin-bottom: 16px;
+    white-space: pre-line;
+  }
+
+  .code-box {
+    background: #0f172a;
+    color: #f8fafc;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.9rem;
+    padding: 14px 16px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+    white-space: pre;
+    border-left: 4px solid #3b82f6;
+  }
+
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    background: var(--white);
+  }
+
+  .option-item:hover {
+    border-color: var(--primary-light);
+    background: #f8fafc;
+  }
+
+  .option-item.selected {
+    border-color: var(--primary);
+    background: var(--primary-bg);
+  }
+
+  .opt-letter {
+    min-width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: #e2e8f0;
+    color: var(--text);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+
+  .option-item.selected .opt-letter {
+    background: var(--primary);
+    color: var(--white);
+  }
+
+  .opt-text {
+    padding-top: 3px;
+    font-size: 0.96rem;
+  }
+
+  /* CHECKBOX / CROSS TABLE FOR SOAL 46-50 */
+  .tf-instruction {
+    background: #eff6ff;
+    border-left: 4px solid var(--primary);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin-bottom: 14px;
+    color: #1e3a8a;
+  }
+
+  .tf-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+  }
+
+  .tf-table th, .tf-table td {
+    border: 1.5px solid var(--border);
+    padding: 12px;
+    text-align: left;
+  }
+
+  .tf-table th {
+    background: #f1f5f9;
+    font-size: 0.88rem;
+    color: var(--text);
+  }
+
+  .tf-table th:first-child, .tf-table td:first-child {
+    width: 110px;
+    text-align: center;
+  }
+
+  .mark-box {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto;
+    border: 2px solid #64748b;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    cursor: pointer;
+    background: var(--white);
+    transition: all 0.15s ease;
+  }
+
+  .mark-box:hover {
+    border-color: var(--primary);
+    transform: scale(1.04);
+  }
+
+  .mark-box.checked {
+    background: var(--success-bg);
+    border-color: var(--success);
+    color: var(--success);
+  }
+
+  .mark-box.crossed {
+    background: var(--danger-bg);
+    border-color: var(--danger);
+    color: var(--danger);
+  }
+
+  .q-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  /* SIDEBAR NAV */
+  .nav-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    border: 1px solid #e2e8f0;
+    position: sticky;
+    top: 76px;
+  }
+
+  .nav-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-bottom: 14px;
+    max-height: 360px;
+    overflow-y: auto;
+    padding-right: 2px;
+  }
+
+  .nav-btn {
+    height: 36px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    color: var(--text);
+  }
+
+  .nav-btn.answered {
+    background: var(--success-bg);
+    border-color: var(--success);
+    color: var(--success);
+  }
+
+  .nav-btn.doubt {
+    background: var(--warning-bg);
+    border-color: #d97706;
+    color: #92400e;
+  }
+
+  .nav-btn.active {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: var(--white) !important;
+  }
+
+  .legend {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .legend span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+
+  /* RESULT SCREEN */
+  #resultScreen {
+    display: none;
+    max-width: 960px;
+    margin: 24px auto;
+    padding: 0 16px 40px;
+  }
+
+  .result-banner {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 28px;
+    text-align: center;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.06);
+    border: 1px solid #e2e8f0;
+    margin-bottom: 24px;
+  }
+
+  .score-circle {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    background: var(--primary-bg);
+    border: 6px solid var(--primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 14px auto;
+  }
+
+  .score-num {
+    font-size: 2.1rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+  }
+
+  .score-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .result-meta {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 14px 0 20px;
+    font-size: 0.9rem;
+  }
+
+  .meta-chip {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 6px 14px;
+    border-radius: 8px;
+  }
+
+  .review-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    border: 1px solid #e2e8f0;
+    border-left: 5px solid var(--border);
+  }
+
+  .review-card.correct {
+    border-left-color: var(--success);
+  }
+
+  .review-card.wrong {
+    border-left-color: var(--danger);
+  }
+
+  .exp-box {
+    margin-top: 10px;
+    background: #f8fafc;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    color: #334155;
+  }
+
+  /* MODAL CONFIRM */
+  #confirmModal {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.7);
+    z-index: 9000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+
+  .modal-box {
+    background: var(--white);
+    max-width: 400px;
+    width: 100%;
+    border-radius: 14px;
+    padding: 22px;
+    text-align: center;
+  }
+
+  @media print {
+    #lockOverlay, #confirmModal, .no-print {
+      display: none !important;
+    }
+    body {
+      background: #fff;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- OVERLAY PENGUNCIAN PASSWORD SAAT KELUAR APLIKASI (BAIK BELUM MAUPUN SUDAH SELESAI) -->
+<div id="lockOverlay">
+  <div class="lock-card">
+    <div class="lock-icon">🔒</div>
+    <h2>AKSES APLIKASI TERKUNCI</h2>
+    <p id="lockReason">Terdeteksi Anda keluar dari halaman ujian atau berpindah tab/aplikasi. Masukkan password pengawas untuk melanjutkan kembali.</p>
+    <div class="lock-badge" id="lockViolationInfo">Total Keluar / Pelanggaran: 1 kali</div>
+    <input type="password" id="unlockPasswordInput" class="lock-input" placeholder="Masukkan Password" autocomplete="off" />
+    <div class="lock-error" id="lockErrorMsg"></div>
+    <button type="button" class="btn btn-danger btn-full" onclick="attemptUnlock()">Buka Kunci & Lanjutkan</button>
+  </div>
+</div>
+
+<!-- MODAL KONFIRMASI SELESAI -->
+<div id="confirmModal">
+  <div class="modal-box">
+    <h3 style="margin-top:0;">Kumpulkan Jawaban?</h3>
+    <p id="confirmSummary" style="font-size:0.92rem; color:#475569;"></p>
+    <div style="display:flex; gap:10px; justify-content:center; margin-top:18px;">
+      <button type="button" class="btn btn-outline" onclick="closeConfirmModal()">Periksa Lagi</button>
+      <button type="button" class="btn btn-success" onclick="finishExam()">Ya, Kumpulkan</button>
+    </div>
+  </div>
+</div>
+
+<!-- HALAMAN AWAL / IDENTITAS -->
+<div id="startScreen" class="container-center">
+  <div class="start-card">
+    <div class="start-header">
+      <h1>KUIS DIGITAL INFORMATIKA — KELAS XI</h1>
+      <p>SDLC, Algoritma, Flowchart, Pseudocode, dan Pemrograman Python</p>
+    </div>
+    <div class="start-body">
+      <div class="form-group">
+        <label for="studentName">Nama Lengkap Siswa</label>
+        <input type="text" id="studentName" class="form-control" placeholder="Contoh: Budi Santoso" />
+      </div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+        <div class="form-group">
+          <label for="studentClass">Kelas</label>
+          <select id="studentClass" class="form-control">
+            <option value="">-- Pilih Kelas --</option>
+            <option value="XI-3">XI-3</option>
+            <option value="XI-5">XI-5</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="studentAbsen">Nomor Absen</label>
+          <input type="number" id="studentAbsen" class="form-control" min="1" max="50" placeholder="1 - 45" />
+        </div>
+      </div>
+
+      <div class="rules-box">
+        <strong>Tata Tertib & Keamanan Ujian:</strong>
+        <ul>
+          <li>Jumlah soal: <strong>50 butir</strong> (45 Pilihan Ganda + 5 Analisis Benar/Salah).</li>
+          <li>Waktu pengerjaan: <strong>90 menit</strong>.</li>
+          <li>Untuk soal nomor 46–50, klik kotak hingga muncul tanda <strong>✓</strong> (Benar) atau <strong>✗</strong> (Salah).</li>
+          <li><strong>Sistem Pengunci Otomatis:</strong> Apabila murid keluar dari halaman aplikasi, berpindah tab, meminimalkan browser, atau menutup layar — <strong>baik saat ujian berlangsung maupun setelah selesai</strong> — layar akan terkunci dan wajib memasukkan <strong>Password Pengawas</strong> untuk membuka kembali.</li>
+        </ul>
+      </div>
+
+      <button type="button" class="btn btn-primary btn-full" onclick="startExam()">Mulai Ujian Sekarang</button>
+    </div>
+  </div>
+</div>
+
+<!-- HALAMAN UJIAN -->
+<div id="examScreen">
+  <div class="topbar">
+    <div class="topbar-info">
+      <div class="topbar-title">INFORMATIKA KELAS XI — CBT</div>
+      <div class="topbar-sub" id="displayStudentInfo">Peserta: -</div>
+    </div>
+    <div class="topbar-stats">
+      <div class="pill pill-warn" id="violationBadge">Keluar: 0x</div>
+      <div class="pill pill-timer" id="timerDisplay">90:00</div>
+      <button type="button" class="btn btn-success" style="padding:7px 14px; font-size:0.85rem;" onclick="openConfirmModal()">Selesai</button>
+    </div>
+  </div>
+
+  <div class="exam-main">
+    <div class="question-card">
+      <div class="q-header">
+        <span class="q-badge" id="qNumberBadge">Soal No. 1</span>
+        <span class="q-type" id="qTypeBadge">Pilihan Ganda</span>
+      </div>
+      <div id="qContentArea"></div>
+      <div class="q-footer">
+        <button type="button" class="btn btn-outline" id="prevBtn" onclick="prevQuestion()">← Sebelumnya</button>
+        <button type="button" class="btn btn-warning" id="doubtBtn" onclick="toggleDoubt()">Ragu-ragu</button>
+        <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Berikutnya →</button>
+      </div>
+    </div>
+
+    <div class="nav-card">
+      <div class="nav-title">
+        <span>Navigasi Soal</span>
+        <span id="answeredCount" style="font-size:0.82rem; color:var(--primary);">0/50 Terjawab</span>
+      </div>
+      <div class="nav-grid" id="navGrid"></div>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--primary);"></i> Aktif</span>
+        <span><i class="dot" style="background:var(--success-bg); border:1px solid var(--success);"></i> Dijawab</span>
+        <span><i class="dot" style="background:var(--warning-bg); border:1px solid #d97706;"></i> Ragu-ragu</span>
+        <span><i class="dot" style="background:#fff; border:1px solid var(--border);"></i> Kosong</span>
+      </div>
+      <button type="button" class="btn btn-success btn-full" onclick="openConfirmModal()">Kumpulkan Jawaban</button>
+    </div>
+  </div>
+</div>
+
+<!-- HALAMAN HASIL -->
+<div id="resultScreen">
+  <div class="result-banner">
+    <h2 style="margin:0 0 6px; color:var(--primary);">HASIL EVALUASI KUIS INFORMATIKA XI</h2>
+    <p style="margin:0; color:var(--muted); font-size:0.92rem;">Rekapitulasi nilai dan analisis jawaban peserta didik</p>
+    <div class="score-circle">
+      <div class="score-num" id="finalScore">0</div>
+      <div class="score-label">NILAI AKHIR</div>
+    </div>
+    <div class="result-meta" id="resultMeta"></div>
+    <div class="no-print" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+      <button type="button" class="btn btn-primary" onclick="window.print()">Cetak / Simpan PDF</button>
+      <button type="button" class="btn btn-danger" onclick="manualLock()">Kunci Layar Sekarang</button>
+    </div>
+  </div>
+  <div id="reviewContainer"></div>
+</div>
+
+<script>
+  // PASSWORD PENGAWAS UNTUK MEMBUKA KUNCI SAAT MURID KELUAR APLIKASI
+  const UNLOCK_PASSWORD = "GuruInfor";
+  const STORAGE_KEY = "cbt_inf_xi_state_v1";
+
+  const QUESTIONS = [
+    { type: "pg", q: "Urutan tahapan yang benar pada siklus hidup pengembangan perangkat lunak (SDLC) secara umum adalah....", opts: ["Design → Testing → Analysis → Implementation → Deployment → Maintenance", "Analysis → Implementation → Design → Testing → Deployment → Maintenance", "Analysis → Design → Implementation → Testing → Deployment → Maintenance", "Planning → Implementation → Testing → Design → Maintenance → Deployment", "Testing → Design → Analysis → Implementation → Deployment → Maintenance"], ans: 2, exp: "Urutan standar SDLC dimulai dari Analysis (analisis kebutuhan), Design (perancangan), Implementation (pengkodean), Testing (pengujian), Deployment (penerapan), hingga Maintenance (pemeliharaan)." },
+    { type: "pg", q: "Di bawah ini yang BUKAN merupakan contoh model atau metodologi dalam SDLC adalah....", opts: ["Waterfall", "Agile", "Bluetooth", "Prototype", "Spiral"], ans: 2, exp: "Bluetooth adalah teknologi komunikasi nirkabel jarak pendek, bukan metodologi SDLC." },
+    { type: "pg", q: "Model pengembangan perangkat lunak yang menekankan siklus berulang (iteratif) dalam jangka pendek (sprint) serta adaptif terhadap perubahan kebutuhan disebut....", opts: ["Waterfall", "Agile", "Bluetooth", "Linear Sequential", "Big Bang"], ans: 1, exp: "Agile menerapkan iterasi singkat (sprint) dan fleksibel terhadap perubahan kebutuhan pengguna." },
+    { type: "pg", q: "Tujuan utama pembuatan prototype sebelum sistem penuh dikembangkan adalah....", opts: ["Menghapus kebutuhan pengujian sistem oleh pengguna akhir", "Menyediakan model awal yang dapat dilihat dan diuji pengguna untuk memperjelas kebutuhan sistem", "Menggantikan seluruh dokumentasi teknis proyek", "Menjalankan aplikasi langsung pada server produksi tanpa evaluasi", "Mengurangi jumlah baris kode menjadi nol"], ans: 1, exp: "Prototype merupakan tiruan awal (mockup/sampel kerja) untuk mendapatkan umpan balik pengguna sebelum membangun sistem utuh." },
+    { type: "pg", q: "Model Waterfall paling sesuai diterapkan pada kondisi berikut, KECUALI....", opts: ["Persyaratan sistem sudah dipahami dengan jelas dan tidak banyak berubah", "Aturan dan standar proyek bersifat baku serta terdokumentasi sejak awal", "Kebutuhan pengguna masih sangat dinamis dan sering berubah di tengah jalan", "Setiap fase harus diselesaikan sebelum melangkah ke fase berikutnya", "Alur kerja proyek memiliki ketergantungan tahapan yang terstruktur"], ans: 2, exp: "Waterfall kurang cocok jika kebutuhan sering berubah di tengah proyek karena sifatnya yang linier satu arah." },
+    { type: "pg", q: "Tim e-sport sekolah ingin membuat aplikasi pencatat statistik pertandingan. Mereka merilis versi mini terlebih dahulu dalam dua minggu, meminta masukan pemain dan pelatih, lalu menyempurnakannya pada putaran berikutnya. Pendekatan ini mencerminkan model....", opts: ["Waterfall", "Agile", "Bluetooth", "Assembly", "Hexadecimal"], ans: 1, exp: "Pengerjaan bertahap dalam putaran singkat dengan evaluasi berkala merupakan ciri utama metodologi Agile." },
+    { type: "pg", q: "Salah satu risiko yang perlu diwaspadai dalam penggunaan metodologi Agile adalah....", opts: ["Kode program tidak dapat diperbarui setelah rilis pertama", "Perubahan permintaan yang terus berulang tanpa batas (scope creep) jika tidak dikendalikan", "Tidak adanya komunikasi antara pengembang dan pemangku kepentingan", "Hanya dapat diterapkan pada aplikasi berbasis teks saja", "Seluruh tahap analisis dilakukan setelah produk selesai digunakan bertahun-tahun"], ans: 1, exp: "Fleksibilitas Agile berisiko memicu pembengkakan lingkup kerja (scope creep) bila permintaan perubahan tidak dikelola dengan disiplin." },
+    { type: "pg", q: "Ketua MPK ingin membuat sistem pemungutan suara digital. Sebelum merancang antarmuka, ia berdiskusi dengan pengurus kelas dan guru pembina untuk mencatat kebutuhan sistem. Tahapan SDLC yang sedang berlangsung adalah....", opts: ["Design", "Analysis", "Deployment", "Maintenance", "Testing"], ans: 1, exp: "Pengumpulan dan pendataan kebutuhan pengguna merupakan kegiatan pada tahap Analysis." },
+    { type: "pg", q: "Siswa anggota klub robotika menuliskan kode program kontrol sensor jarak menggunakan bahasa C++ berdasarkan rancangan alur yang telah dibuat. Tahap SDLC tersebut adalah....", opts: ["Analysis", "Implementation", "Maintenance", "Planning", "Deployment"], ans: 1, exp: "Penerjemahan desain ke dalam kode pemrograman disebut tahap Implementation (Pengembangan/Coding)." },
+    { type: "pg", q: "Setelah aplikasi perpustakaan digital digunakan selama satu semester, ditemukan tombol pencarian yang tidak merespons saat diketik cepat, lalu tim memperbaikinya. Kegiatan ini termasuk tahap....", opts: ["Analysis", "Design", "Maintenance", "Planning", "Requirement Gathering"], ans: 2, exp: "Perbaikan bug atau penyesuaian setelah aplikasi dirilis ke pengguna masuk ke dalam tahap Maintenance (Pemeliharaan)." },
+    { type: "pg", q: "Kegiatan menjalankan program dengan berbagai skenario input untuk memastikan hasilnya sesuai spesifikasi dan bebas kesalahan disebut....", opts: ["Implementation", "Testing", "Deployment", "Analysis", "Documentation"], ans: 1, exp: "Testing (Pengujian) bertujuan memverifikasi bahwa perangkat lunak bebas cacat dan bekerja sesuai kebutuhan." },
+    { type: "pg", q: "Sebuah aplikasi pengelolaan ujian nasional memiliki aturan penilaian resmi yang sudah ditetapkan regulasi dan tidak berubah selama masa pengembangan. Mengapa model Waterfall sering dipilih pada skenario tersebut?", opts: ["Karena model Waterfall tidak memerlukan uji coba sistem", "Karena alur bertahap dengan dokumentasi jelas cocok untuk spesifikasi yang sudah pasti dan stabil", "Karena Waterfall hanya berjalan di sistem operasi seluler", "Karena Waterfall menghilangkan kebutuhan pengumpulan data awal", "Karena Waterfall tidak membutuhkan perencanaan"], ans: 1, exp: "Waterfall unggul pada proyek dengan regulasi baku, spesifikasi jelas, dan dokumentasi terstruktur di setiap tahap." },
+    { type: "pg", q: "Kesalahan logika, kesalahan penulisan aturan bahasa, atau cacat pada program yang membuat perilaku aplikasi menyimpang dari yang diharapkan disebut....", opts: ["Bug / Defect", "Cache", "Resolution", "Cookie", "Shortcut"], ans: 0, exp: "Bug atau defect adalah istilah teknis untuk cacat/kesalahan dalam kode atau logika perangkat lunak." },
+    { type: "pg", q: "Rina menyiapkan bekal sekolah dengan langkah: mencuci kotak makan, menata nasi dan lauk, menutup rapat kotak makan, lalu memasukkannya ke dalam tas. Urutan langkah logis dan terstruktur ini disebut....", opts: ["Konstanta", "Algoritma", "Variabel", "Array", "Indeks"], ans: 1, exp: "Algoritma adalah urutan langkah logis dan sistematis untuk menyelesaikan suatu masalah." },
+    { type: "pg", q: "Salah satu ciri algoritma yang baik adalah definiteness (kepastian). Dalam algoritma menghitung ongkos kirim paket sekolah, makna definiteness adalah....", opts: ["Setiap langkah harus jelas, tidak ambigu, dan memiliki arti yang pasti", "Algoritma boleh tidak memiliki langkah akhir", "Algoritma harus menggunakan bahasa pemrograman tingkat rendah", "Algoritma tidak boleh memakai aturan perhitungan matematis", "Algoritma wajib berjalan selama lebih dari satu jam"], ans: 0, exp: "Definiteness berarti setiap instruksi dalam algoritma harus didefinisikan secara tegas dan tidak menimbulkan penafsiran ganda." },
+    { type: "pg", q: "Struktur kontrol algoritma yang menjalankan setiap perintah satu per satu secara berurutan dari atas ke bawah dinamakan....", opts: ["Sequence (Runtutan)", "Selection (Percabangan)", "Iteration (Perulangan)", "Recursion (Rekursi)", "Branching"], ans: 0, exp: "Sequence (runtutan) mengeksekusi instruksi secara berurutan baris demi baris tanpa lompatan." },
+    { type: "pg", q: "Berikut ini yang BUKAN merupakan cara menuliskan algoritma adalah....", opts: ["Flowchart", "Pseudocode", "Bahasa natural / deskriptif", "Diagram alir", "Bagan warna RGB"], ans: 4, exp: "Notasi algoritma terdiri atas kalimat deskriptif (bahasa natural), flowchart (diagram alir), dan pseudocode." },
+    { type: "pg", q: "Kantin kejujuran memberikan bonus stiker jika siswa membeli minimal 3 potong kue. Jika membeli kurang dari 3 potong kue, tidak mendapat stiker. Struktur algoritma yang digunakan adalah....", opts: ["Percabangan (Selection)", "Perulangan (Iteration)", "Runtutan murni (Sequence)", "Array satu dimensi", "Konstanta"], ans: 0, exp: "Penentuan kondisi (>= 3 atau tidak) merupakan struktur percabangan (selection)." },
+    { type: "pg", q: "Sistem kuis daring memberi kesempatan siswa menjawab soal maksimal 2 kali jika jawaban pertama salah. Jika benar, langsung lanjut ke soal berikutnya. Struktur algoritma yang paling sesuai adalah....", opts: ["Perulangan bersyarat (misalnya WHILE) yang dikombinasikan dengan percabangan (IF)", "Runtutan dua baris tanpa kondisi", "Perulangan tanpa batas tanpa syarat berhenti", "Tanpa percabangan sama sekali", "Menghapus seluruh kondisi pengecekan"], ans: 0, exp: "Batas maksimal percobaan dikendalikan oleh perulangan WHILE, sedangkan pengecekan benar/salah menggunakan percabangan IF." },
+    { type: "pg", q: "Aturan potongan biaya ekstrakurikuler:\n• Jika kehadiran >= 80 AND lunas_iuran == True : potongan 50%\n• Jika kehadiran >= 80 AND lunas_iuran == False : potongan 20%\n• Selain itu : potongan 0%\n\nJika seorang siswa memiliki kehadiran = 85 dan lunas_iuran = False, berapa persen potongan yang diperoleh?", opts: ["50%", "20%", "0%", "80%", "100%"], ans: 1, exp: "Nilai kehadiran = 85 (>= 80) terpenuhi dan lunas_iuran == False terpenuhi, sehingga masuk cabang kedua dengan potongan 20%." },
+    { type: "pg", q: "Dalam flowchart, simbol jajaran genjang digunakan untuk menyatakan....", opts: ["Awal atau akhir program (Terminator)", "Proses input atau output data", "Pengambilan keputusan logis", "Penghubung antarhalaman", "Pengulangan otomatis"], ans: 1, exp: "Jajaran genjang (parallelogram) melambangkan operasi masukan (input) dan keluaran (output)." },
+    { type: "pg", q: "Petugas koperasi menghitung total bayar dengan rumus Total = Harga * Jumlah. Dalam flowchart, operasi perhitungan ini digambarkan dengan simbol....", opts: ["Persegi panjang (Process)", "Jajaran genjang (Input/Output)", "Belah ketupat (Decision)", "Oval (Terminator)", "Lingkaran konektor"], ans: 0, exp: "Persegi panjang (Process) digunakan untuk menyatakan pengolahan data atau perhitungan aritmetika." },
+    { type: "pg", q: "Pada flowchart penentuan kelulusan, simbol belah ketupat berisi pertanyaan NILAI >= 75?. Fungsi simbol belah ketupat tersebut adalah....", opts: ["Menampilkan teks hasil ke layar", "Mengakhiri eksekusi program", "Mengevaluasi kondisi logika untuk menentukan arah cabang alur", "Menyimpan data ke penyimpanan permanen", "Menandai awal program"], ans: 2, exp: "Belah ketupat (Decision) berfungsi mengevaluasi ekspresi logika (Ya/Tidak) untuk menentukan jalur alur berikutnya." },
+    { type: "pg", q: "Perhatikan alur perhitungan potongan harga berikut:\n• INPUT BELANJA = 80000\n• Jika BELANJA >= 50000 → DISKON = 15000, selain itu DISKON = 0\n• TOTAL = BELANJA - DISKON\n• CETAK TOTAL\n\nJika BELANJA = 80000, nilai TOTAL yang tercetak adalah....", opts: ["80000", "65000", "50000", "15000", "0"], ans: 1, exp: "Karena 80000 >= 50000 bernilai benar, DISKON = 15000. Maka TOTAL = 80000 - 15000 = 65000." },
+    { type: "pg", q: "Perhatikan alur perulangan berikut:\n• HITUNG = 1\n• Selama HITUNG <= 4 : cetak \"SEMANGAT\", lalu HITUNG = HITUNG + 1\n• Selesai\n\nBerapa kali kata \"SEMANGAT\" dicetak?", opts: ["1 kali", "3 kali", "4 kali", "5 kali", "0 kali"], ans: 2, exp: "Perulangan berjalan untuk nilai HITUNG = 1, 2, 3, dan 4 (sebanyak 4 kali) sebelum berhenti saat HITUNG = 5." },
+    { type: "pg", q: "Sebuah flowchart memeriksa SUHU = 38. Jika SUHU > 37 cabangnya bertuliskan \"NORMAL\", dan jika Tidak bertuliskan \"DEMAM\". Mengapa alur ini memiliki kesalahan logika (logical bug)?", opts: ["Karena variabel SUHU tidak boleh bernilai bilangan bulat", "Karena kondisi dan cabang hasilnya terbalik dari logika umum suhu tubuh", "Karena tanda > tidak boleh dipakai pada flowchart", "Karena flowchart tidak boleh memiliki percabangan", "Karena nilai 38 tidak dapat dibandingkan"], ans: 1, exp: "Suhu tubuh di atas 37°C seharusnya dikategorikan demam, bukan normal. Penempatan output pada cabang Ya dan Tidak tertukar." },
+    { type: "pg", q: "Perhatikan aturan kelulusan proyek:\n• Jika NILAI_PROYEK >= 80 AND PRESENTASI >= 80 → HASIL = \"LULUS\"\n• Selain itu → HASIL = \"PERBAIKAN\"\n• CETAK HASIL\n\nJika NILAI_PROYEK = 85 dan PRESENTASI = 75, teks yang dicetak adalah....", opts: ["LULUS", "PERBAIKAN", "85", "75", "ERROR"], ans: 1, exp: "Operator AND mengharuskan kedua syarat terpenuhi. Karena PRESENTASI = 75 (< 80), kondisi bernilai False sehingga mencetak PERBAIKAN." },
+    { type: "pg", q: "Perhatikan alur berikut:\n• ANGKA = 5\n• Selama ANGKA > 0 : cetak ANGKA, lalu ANGKA = ANGKA + 1\n• Selesai\n\nApa yang terjadi saat alur ini dijalankan?", opts: ["Mencetak angka 5 lalu berhenti", "Terjadi perulangan tak terbatas (infinite loop) karena nilai ANGKA terus bertambah dan selalu lebih besar dari 0", "Program langsung selesai tanpa mencetak apa pun", "Nilai ANGKA berubah menjadi negatif", "Program mencetak angka 5 sampai 1 saja"], ans: 1, exp: "Nilai ANGKA terus meningkat (5, 6, 7, ...) sehingga syarat ANGKA > 0 tidak pernah bernilai salah dan menyebabkan infinite loop." },
+    { type: "pg", q: "Penulisan langkah-langkah algoritma menggunakan bahasa terstruktur yang menyerupai kode program namun tidak bergantung pada sintaks bahasa tertentu disebut....", opts: ["Flowchart", "Pseudocode", "Binary Code", "Topology", "Wireframe"], ans: 1, exp: "Pseudocode (kode semu) memakai struktur mirip bahasa pemrograman agar mudah dipahami manusia dan diterjemahkan ke bahasa koding apa pun." },
+    { type: "pg", q: "Data anggota perpustakaan memuat: NomorAnggota (\"A102\"), Nama (\"Bima\"), Denda (2500), dan Aktif (True). Tipe data yang paling sesuai secara berurutan adalah....", opts: ["String, String, Integer, Boolean", "Integer, String, Float, String", "Boolean, Integer, String, Float", "String, Integer, Boolean, Integer", "Float, String, Integer, Boolean"], ans: 0, exp: "\"A102\" dan \"Bima\" adalah teks (String), 2500 adalah bilangan bulat (Integer), dan True adalah nilai logika (Boolean)." },
+    { type: "pg", q: "Keunggulan pseudocode dibanding flowchart adalah....", opts: ["Dapat langsung dieksekusi oleh prosesor tanpa penerjemah", "Mudah ditulis, diubah, dan diterjemahkan ke bahasa pemrograman berbasis teks", "Selalu berbentuk gambar diagram bertingkat", "Tidak memerlukan logika urutan langkah", "Hanya bisa digunakan untuk satu bahasa pemrograman"], ans: 1, exp: "Pseudocode berbentuk teks sehingga ringkas disunting dan dekat dengan struktur bahasa pemrograman nyata." },
+    { type: "pg", q: "Kata kunci dalam pseudocode yang lazim dipakai untuk menerima data masukan dari pengguna adalah....", opts: ["INPUT / READ", "PRINT / OUTPUT", "STOP / END", "BREAK / SKIP", "DELETE / CLEAR"], ans: 0, exp: "INPUT atau READ digunakan untuk membaca data masukan ke dalam variabel." },
+    { type: "pg", q: "Struktur kendali yang digunakan untuk menjalankan blok instruksi secara berulang selama kondisi terpenuhi atau sebanyak jumlah tertentu adalah....", opts: ["FOR / WHILE", "PRINT / SHOW", "OPEN / CLOSE", "IMPORT / EXPORT", "RETURN / EXIT"], ans: 0, exp: "FOR dan WHILE adalah konstruksi standar perulangan (looping) dalam pseudocode maupun bahasa pemrograman." },
+    { type: "pg", q: "Perhatikan potongan pseudocode berikut:", code: "kelas = \"XI-3\"\nPRINT \"Selamat belajar, kelas \" + kelas", qAfter: "Keluaran yang tampil adalah....", opts: ["Selamat belajar, kelas kelas", "Selamat belajar, kelas XI-3", "\"Selamat belajar, kelas XI-3\"", "XI-3 kelas", "Error penjumlahan"], ans: 1, exp: "Operator + menggabungkan teks literal dengan isi variabel kelas sehingga tampil: Selamat belajar, kelas XI-3." },
+    { type: "pg", q: "Perhatikan potongan pseudocode berikut:", code: "a = 12\nb = 8\na = a + b\nPRINT a", qAfter: "Nilai yang dicetak adalah....", opts: ["12", "8", "20", "128", "4"], ans: 2, exp: "Variabel a diperbarui menjadi 12 + 8 = 20, lalu dicetak ke layar." },
+    { type: "pg", q: "Perhatikan potongan pseudocode berikut:", code: "jumlah = 0\nFOR i = 1 TO 3 DO\n    jumlah = jumlah + i\nENDFOR\nPRINT jumlah", qAfter: "Nilai jumlah yang dicetak adalah....", opts: ["3", "6", "9", "1", "0"], ans: 1, exp: "Akumulasi berjalan: 0 + 1 = 1, lalu 1 + 2 = 3, lalu 3 + 3 = 6." },
+    { type: "pg", q: "Perhatikan pseudocode berikut:", code: "READ x, y\nIF x < y THEN\n    hasil = x\nELSE\n    hasil = y\nENDIF\nPRINT hasil", qAfter: "Fungsi utama pseudocode tersebut adalah....", opts: ["Mencetak nilai yang lebih kecil di antara x dan y", "Mencetak nilai yang lebih besar di antara x dan y", "Selalu mencetak nilai x", "Menjumlahkan x dan y", "Mengalikan x dan y"], ans: 0, exp: "Jika x < y maka hasil diisi x; jika tidak, hasil diisi y. Artinya selalu memilih nilai minimum dari dua bilangan." },
+    { type: "pg", q: "Fungsi bawaan Python untuk menampilkan keluaran ke layar konsol adalah....", opts: ["print()", "echo()", "display()", "out()", "show()"], ans: 0, exp: "Dalam Python, fungsi standar untuk mencetak output ke konsol adalah print()." },
+    { type: "pg", q: "Manakah pilihan nama variabel yang VALID menurut aturan penamaan di Python?", opts: ["total_bayar", "1nilai", "nilai-ujian", "for", "total bayar"], ans: 0, exp: "total_bayar valid karena hanya memakai huruf dan garis bawah (_). Variabel tidak boleh diawali angka, memakai tanda hubung (-), spasi, atau kata kunci (for)." },
+    { type: "pg", q: "Karakter yang digunakan untuk menulis komentar satu baris pada bahasa Python adalah....", opts: ["#", "//", "/*", "--", ";"], ans: 0, exp: "Tanda pagar (#) menandai komentar satu baris di Python." },
+    { type: "pg", q: "Perhatikan kode Python berikut:", code: "harga_satuan = input(\"Masukkan harga: \")\njumlah = 5\ntotal = harga_satuan * jumlah\nprint(total)", qAfter: "Jika pengguna mengetik 2000, apa yang dicetak oleh program?", opts: ["10000", "20002000200020002000 (teks \"2000\" diulang 5 kali karena input() mengembalikan tipe str)", "2005", "0", "400"], ans: 1, exp: "Fungsi input() menghasilkan string (str). Mengalikan string \"2000\" dengan integer 5 akan menduplikasi teks sebanyak 5 kali." },
+    { type: "pg", q: "Perhatikan kode Python berikut:", code: "mapel = \"Informatika\"\nruang = \"Lab 2\"\nprint(f\"Pelajaran {mapel} di {ruang}\")", qAfter: "Keluaran yang dihasilkan adalah....", opts: ["Pelajaran {mapel} di {ruang}", "Pelajaran Informatika di Lab 2", "Pelajaran mapel di ruang", "SyntaxError", "Informatika Lab 2"], ans: 1, exp: "f-string menyisipkan nilai variabel di dalam kurung kurawal {} ke dalam string." },
+    { type: "pg", q: "Tarif parkir sepeda motor di area sekolah: Rp3.000 untuk 2 jam pertama, dan tambahan Rp1.500 untuk setiap jam berikutnya. Perhatikan kode berikut:", code: "jam = 4\nif jam <= 2:\n    biaya = 3000\nelse:\n    biaya = 3000 + (jam - 2) * 1500\nprint(biaya)", qAfter: "Berapakah nilai biaya yang tercetak?", opts: ["3000", "4500", "6000", "7500", "9000"], ans: 2, exp: "Karena jam = 4 (> 2), masuk cabang else: 3000 + (4 - 2) * 1500 = 3000 + 3000 = 6000." },
+    { type: "pg", q: "Siswa dapat mengikuti lomba debat jika nilai_inggris >= 80 dan aktif_ekskul == True. Operator logika yang tepat untuk mengisi [...] pada kode berikut adalah....", code: "nilai_inggris = 84\naktif_ekskul = True\nif nilai_inggris >= 80 [...] aktif_ekskul == True:\n    print(\"Terdaftar\")", opts: ["and", "or", "not", "&&", "xor"], ans: 0, exp: "Dalam Python, operator logika DAN ditulis dengan kata kunci huruf kecil: and." },
+    { type: "pg", q: "Perhatikan list berikut pada Python:", code: "hari_aktif = [\"Senin\", \"Selasa\", \"Rabu\", \"Kamis\", \"Jumat\"]\nprint(hari_aktif[1])", qAfter: "Elemen apakah yang tampil di layar?", opts: ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"], ans: 1, exp: "Indeks list Python dimulai dari 0 (\"Senin\"), sehingga indeks 1 merujuk pada \"Selasa\"." },
+
+    // SOAL 46 - 50 (CEKLIS ✓ / SILANG ✗)
+    {
+      type: "tf",
+      q: "Kelas XI-5 berencana membuat aplikasi tabungan kelas. Karena belum terbayang tata letak menunya, pengembang membuat rancangan layar awal (mockup) agar bisa dikomentari bendahara sebelum kode utama dibuat.",
+      statements: [
+        "Pembuatan rancangan awal (mockup) untuk mendapatkan umpan balik sejak dini sesuai dengan pendekatan Prototyping.",
+        "Dalam model Waterfall, tahap analisis kebutuhan dirancang untuk diselesaikan terlebih dahulu sebelum masuk ke tahap berikutnya.",
+        "Perancangan struktur basis data dan tata letak antarmuka pengguna termasuk dalam tahap Design."
+      ],
+      ans: ["✓", "✓", "✓"],
+      exp: "Ketiga pernyataan benar: mockup mencerminkan Prototyping, Waterfall menyelesaikan tiap tahap secara berurutan, dan perancangan basis data/UI berada pada tahap Design."
+    },
+    {
+      type: "tf",
+      q: "Saat jam istirahat, Dito ingin membeli minuman di kantin. Jika teh botol tersedia, ia mengambil teh botol; jika habis, ia mengambil air mineral. Setelah memilih, ia membayar ke kasir lalu duduk di kursi.",
+      statements: [
+        "Keputusan Dito memilih antara teh botol dan air mineral berdasarkan ketersediaan merupakan contoh struktur percabangan (selection).",
+        "Sifat finiteness pada algoritma berarti proses harus berhenti setelah melewati sejumlah langkah yang berhingga.",
+        "Langkah membayar ke kasir lalu duduk berurutan merupakan contoh struktur perulangan (iteration)."
+      ],
+      ans: ["✓", "✓", "✗"],
+      exp: "Pernyataan 1 dan 2 benar (✓). Pernyataan 3 salah (✗) karena langkah berurutan satu per satu adalah struktur runtutan (sequence), bukan perulangan."
+    },
+    {
+      type: "tf",
+      q: "Sebuah flowchart pemeriksaan peminjaman buku memiliki alur:\n• MULAI → INPUT KODE_BUKU → keputusan APAKAH STOK > 0?\n• Cabang (Ya) → CETAK \"BISA DIPINJAM\" → SELESAI\n• Cabang (Tidak) → CETAK \"STOK HABIS\" → SELESAI",
+      statements: [
+        "Simbol MULAI dan SELESAI pada flowchart digambarkan menggunakan bentuk oval (terminator).",
+        "Operasi CETAK \"BISA DIPINJAM\" digambarkan menggunakan simbol belah ketupat (decision).",
+        "Simbol keputusan APAKAH STOK > 0? memiliki dua jalur keluar, yaitu (Ya) dan (Tidak)."
+      ],
+      ans: ["✓", "✗", "✓"],
+      exp: "Pernyataan 1 dan 3 benar (✓). Pernyataan 2 salah (✗) karena perintah CETAK (output) menggunakan simbol jajaran genjang, bukan belah ketupat."
+    },
+    {
+      type: "tf",
+      q: "Perhatikan pseudocode perhitungan sisa uang saku berikut:",
+      code: "START\nINPUT UangSaku\nOngkos = 4000\nJajan = 6000\nSisa = UangSaku - (Ongkos + Jajan)\nPRINT Sisa\nEND",
+      statements: [
+        "Perintah INPUT digunakan untuk menerima masukan nilai UangSaku, sedangkan PRINT menampilkan nilai Sisa.",
+        "Jika UangSaku bernilai 20000, maka nilai Sisa yang dicetak adalah 10000.",
+        "Nilai Ongkos (4000) dan Jajan (6000) merupakan tipe data Boolean."
+      ],
+      ans: ["✓", "✓", "✗"],
+      exp: "Pernyataan 1 dan 2 benar (✓): 20000 - (4000 + 6000) = 10000. Pernyataan 3 salah (✗) karena 4000 dan 6000 bertipe Integer."
+    },
+    {
+      type: "tf",
+      q: "Perhatikan kode perulangan Python berikut:",
+      code: "saldo = 20000\ntarget = 50000\nminggu = 0\nwhile saldo < target:\n    saldo += 10000\n    minggu += 1\nprint(minggu, saldo)",
+      statements: [
+        "Pernyataan saldo += 10000 setara dengan saldo = saldo + 10000.",
+        "Perulangan berhenti ketika minggu bernilai 3 dengan nilai saldo akhir 50000.",
+        "Jika baris saldo += 10000 tidak ada di dalam blok while, nilai saldo akan tetap 20000 sehingga kondisi saldo < target selalu bernilai True (infinite loop)."
+      ],
+      ans: ["✓", "✓", "✓"],
+      exp: "Ketiga pernyataan benar (✓): perulangan berjalan 3 kali (saldo: 30.000 → 40.000 → 50.000), dan tanpa penambahan saldo akan terjadi infinite loop."
+    }
+  ];
+
+  let state = {
+    started: false,
+    finished: false,
+    locked: false,
+    violations: 0,
+    student: { name: "", cls: "", absen: "" },
+    currentIdx: 0,
+    answers: new Array(QUESTIONS.length).fill(null),
+    doubts: new Array(QUESTIONS.length).fill(false),
+    remainingSec: 90 * 60
+  };
+
+  let timerInterval = null;
+  let lastLockTriggerTime = 0;
+
+  function saveState() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {}
+  }
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && parsed.started) {
+          state = parsed;
+          // Setiap kali murid membuka ulang / kembali ke aplikasi saat sesi aktif (belum maupun sudah selesai), wajib kunci dengan password
+          state.locked = true;
+          state.violations = (state.violations || 0) + 1;
+          saveState();
+        }
+      }
+    } catch (e) {}
+  }
+
+  function triggerLock(reasonText) {
+    if (!state.started) return;
+    const now = Date.now();
+    if (now - lastLockTriggerTime < 600) return;
+    lastLockTriggerTime = now;
+
+    if (!state.locked) {
+      state.violations += 1;
+      state.locked = true;
+      saveState();
+    }
+    showLockScreen(reasonText);
+  }
+
+  function showLockScreen(reasonText) {
+    const overlay = document.getElementById("lockOverlay");
+    const reasonEl = document.getElementById("lockReason");
+    const infoEl = document.getElementById("lockViolationInfo");
+    const errEl = document.getElementById("lockErrorMsg");
+    const inpEl = document.getElementById("unlockPasswordInput");
+
+    const statusLabel = state.finished ? "Status: Ujian Sudah Selesai" : "Status: Ujian Sedang Berlangsung";
+    reasonEl.textContent = reasonText || "Anda terdeteksi keluar dari layar aplikasi. Masukkan password pengawas untuk masuk kembali.";
+    infoEl.textContent = `${statusLabel} • Total Keluar: ${state.violations} kali`;
+    errEl.textContent = "";
+    inpEl.value = "";
+    overlay.style.display = "flex";
+    updateViolationBadge();
+    setTimeout(() => inpEl.focus(), 100);
+  }
+
+  function attemptUnlock() {
+    const inp = document.getElementById("unlockPasswordInput").value.trim();
+    const errEl = document.getElementById("lockErrorMsg");
+    if (inp === UNLOCK_PASSWORD) {
+      state.locked = false;
+      saveState();
+      document.getElementById("lockOverlay").style.display = "none";
+      errEl.textContent = "";
+      requestFullScreenSafe();
+    } else {
+      errEl.textContent = "Password salah! Silakan hubungi guru/pengawas.";
+      document.getElementById("unlockPasswordInput").value = "";
+      document.getElementById("unlockPasswordInput").focus();
+    }
+  }
+
+  function manualLock() {
+    triggerLock("Layar dikunci secara manual. Masukkan password pengawas untuk membuka kembali.");
+  }
+
+  document.getElementById("unlockPasswordInput").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") attemptUnlock();
+  });
+
+  function requestFullScreenSafe() {
+    const el = document.documentElement;
+    if (el.requestFullscreen) {
+      el.requestFullscreen().catch(() => {});
+    } else if (el.webkitRequestFullscreen) {
+      el.webkitRequestFullscreen();
+    }
+  }
+
+  // DETEKSI KELUAR APLIKASI / PINDAH TAB / MINIMIZE / TUTUP LAYAR (BAIK BELUM SELESAI MAUPUN SUDAH SELESAI)
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden && state.started) {
+      triggerLock("Terdeteksi Anda berpindah tab, meminimalkan browser, atau keluar dari aplikasi.");
+    }
+  });
+
+  window.addEventListener("blur", function() {
+    if (state.started && !state.finished) {
+      setTimeout(() => {
+        if (document.hidden || !document.hasFocus()) {
+          triggerLock("Terdeteksi fokus layar meninggalkan jendela aplikasi ujian.");
+        }
+      }, 250);
+    }
+  });
+
+  window.addEventListener("pagehide", function() {
+    if (state.started) {
+      state.locked = true;
+      state.violations += 1;
+      saveState();
+    }
+  });
+
+  document.addEventListener("fullscreenchange", function() {
+    if (!document.fullscreenElement && state.started && !state.locked) {
+      triggerLock("Anda keluar dari mode layar penuh (Fullscreen). Masukkan password untuk melanjutkan.");
+    }
+  });
+
+  // BLOKIR KLIK KANAN & SHORTCUT KECURANGAN
+  document.addEventListener("contextmenu", e => e.preventDefault());
+  document.addEventListener("keydown", function(e) {
+    if (
+      e.key === "F12" ||
+      (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key.toUpperCase())) ||
+      (e.ctrlKey && ["U", "C", "V", "X", "S", "P"].includes(e.key.toUpperCase()))
+    ) {
+      if (!state.finished) e.preventDefault();
+    }
+  });
+
+  function startExam() {
+    const name = document.getElementById("studentName").value.trim();
+    const cls = document.getElementById("studentClass").value;
+    const absen = document.getElementById("studentAbsen").value.trim();
+
+    if (!name || !cls || !absen) {
+      alert("Harap lengkapi Nama Lengkap, Kelas, dan Nomor Absen terlebih dahulu!");
+      return;
+    }
+
+    state.started = true;
+    state.finished = false;
+    state.locked = false;
+    state.violations = 0;
+    state.student = { name, cls, absen };
+    state.currentIdx = 0;
+    state.answers = new Array(QUESTIONS.length).fill(null);
+    state.doubts = new Array(QUESTIONS.length).fill(false);
+    state.remainingSec = 90 * 60;
+    saveState();
+
+    requestFullScreenSafe();
+    enterExamUI();
+  }
+
+  function enterExamUI() {
+    document.getElementById("startScreen").style.display = "none";
+    if (state.finished) {
+      renderResultScreen();
+      return;
+    }
+    document.getElementById("examScreen").style.display = "flex";
+    document.getElementById("displayStudentInfo").textContent =
+      `Peserta: ${state.student.name} | Kelas: ${state.student.cls} | No. Absen: ${state.student.absen}`;
+    updateViolationBadge();
+    buildNavGrid();
+    renderQuestion(state.currentIdx);
+    startTimer();
+  }
+
+  function updateViolationBadge() {
+    const badge = document.getElementById("violationBadge");
+    if (badge) badge.textContent = `Keluar: ${state.violations}x`;
+  }
+
+  function startTimer() {
+    if (timerInterval) clearInterval(timerInterval);
+    updateTimerDisplay();
+    timerInterval = setInterval(() => {
+      if (state.finished) {
+        clearInterval(timerInterval);
+        return;
+      }
+      if (state.locked) return;
+      state.remainingSec--;
+      if (state.remainingSec <= 0) {
+        state.remainingSec = 0;
+        clearInterval(timerInterval);
+        finishExam();
+        return;
+      }
+      if (state.remainingSec % 5 === 0) saveState();
+      updateTimerDisplay();
+    }, 1000);
+  }
+
+  function updateTimerDisplay() {
+    const m = Math.floor(state.remainingSec / 60);
+    const s = state.remainingSec % 60;
+    document.getElementById("timerDisplay").textContent =
+      `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }
+
+  function isQuestionAnswered(idx) {
+    const qObj = QUESTIONS[idx];
+    const ans = state.answers[idx];
+    if (qObj.type === "pg") {
+      return ans !== null && ans !== undefined;
+    } else {
+      return Array.isArray(ans) && ans.length === qObj.statements.length && ans.every(v => v === "✓" || v === "✗");
+    }
+  }
+
+  function buildNavGrid() {
+    const grid = document.getElementById("navGrid");
+    grid.innerHTML = "";
+    let answered = 0;
+    QUESTIONS.forEach((_, idx) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "nav-btn";
+      btn.textContent = idx + 1;
+      const done = isQuestionAnswered(idx);
+      if (done) answered++;
+      if (state.doubts[idx]) btn.classList.add("doubt");
+      else if (done) btn.classList.add("answered");
+      if (idx === state.currentIdx) btn.classList.add("active");
+      btn.onclick = () => {
+        state.currentIdx = idx;
+        saveState();
+        renderQuestion(idx);
+      };
+      grid.appendChild(btn);
+    });
+    document.getElementById("answeredCount").textContent = `${answered}/${QUESTIONS.length} Terjawab`;
+  }
+
+  function renderQuestion(idx) {
+    const qObj = QUESTIONS[idx];
+    document.getElementById("qNumberBadge").textContent = `Soal No. ${idx + 1} dari ${QUESTIONS.length}`;
+    document.getElementById("qTypeBadge").textContent =
+      qObj.type === "pg" ? "Pilihan Ganda" : "Analisis Pernyataan (Ceklis ✓ / Silang ✗)";
+
+    const area = document.getElementById("qContentArea");
+    area.innerHTML = "";
+
+    const qText = document.createElement("div");
+    qText.className = "q-text";
+    qText.textContent = qObj.q;
+    area.appendChild(qText);
+
+    if (qObj.code) {
+      const codeEl = document.createElement("div");
+      codeEl.className = "code-box";
+      codeEl.textContent = qObj.code;
+      area.appendChild(codeEl);
+    }
+
+    if (qObj.qAfter) {
+      const qAfterEl = document.createElement("div");
+      qAfterEl.className = "q-text";
+      qAfterEl.textContent = qObj.qAfter;
+      area.appendChild(qAfterEl);
+    }
+
+    if (qObj.type === "pg") {
+      const list = document.createElement("div");
+      list.className = "options-list";
+      const letters = ["A", "B", "C", "D", "E"];
+      qObj.opts.forEach((optText, oIdx) => {
+        const item = document.createElement("div");
+        item.className = "option-item" + (state.answers[idx] === oIdx ? " selected" : "");
+        item.innerHTML = `
+          <div class="opt-letter">${letters[oIdx]}</div>
+          <div class="opt-text">${escapeHtml(optText)}</div>
+        `;
+        item.onclick = () => {
+          state.answers[idx] = oIdx;
+          saveState();
+          renderQuestion(idx);
+          buildNavGrid();
+        };
+        list.appendChild(item);
+      });
+      area.appendChild(list);
+    } else {
+      const inst = document.createElement("div");
+      inst.className = "tf-instruction";
+      inst.innerHTML = `<strong>Petunjuk:</strong> Klik kotak pada kolom tanda untuk memberi tanda <strong>ceklis (✓)</strong> jika pernyataan <strong>Benar</strong>, atau klik sekali lagi hingga muncul tanda <strong>silang (✗)</strong> jika pernyataan <strong>Salah</strong>.`;
+      area.appendChild(inst);
+
+      if (!Array.isArray(state.answers[idx])) {
+        state.answers[idx] = new Array(qObj.statements.length).fill("");
+      }
+
+      const table = document.createElement("table");
+      table.className = "tf-table";
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th>Tanda (✓ / ✗)</th>
+            <th>Pernyataan</th>
+          </tr>
+        </thead>
+      `;
+      const tbody = document.createElement("tbody");
+      qObj.statements.forEach((stmt, sIdx) => {
+        const curVal = state.answers[idx][sIdx] || "";
+        const tr = document.createElement("tr");
+        const tdMark = document.createElement("td");
+        const box = document.createElement("div");
+        box.className = "mark-box" + (curVal === "✓" ? " checked" : curVal === "✗" ? " crossed" : "");
+        box.textContent = curVal;
+        box.title = "Klik untuk ubah tanda (✓ / ✗)";
+        box.onclick = () => {
+          const nextVal = curVal === "" ? "✓" : curVal === "✓" ? "✗" : "";
+          state.answers[idx][sIdx] = nextVal;
+          saveState();
+          renderQuestion(idx);
+          buildNavGrid();
+        };
+        tdMark.appendChild(box);
+
+        const tdStmt = document.createElement("td");
+        tdStmt.textContent = stmt;
+
+        tr.appendChild(tdMark);
+        tr.appendChild(tdStmt);
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+      area.appendChild(table);
+    }
+
+    document.getElementById("prevBtn").disabled = idx === 0;
+    document.getElementById("nextBtn").textContent = idx === QUESTIONS.length - 1 ? "Selesai →" : "Berikutnya →";
+    document.getElementById("doubtBtn").textContent = state.doubts[idx] ? "★ Ragu-ragu (Aktif)" : "Ragu-ragu";
+    buildNavGrid();
+  }
+
+  function prevQuestion() {
+    if (state.currentIdx > 0) {
+      state.currentIdx--;
+      saveState();
+      renderQuestion(state.currentIdx);
+    }
+  }
+
+  function nextQuestion() {
+    if (state.currentIdx < QUESTIONS.length - 1) {
+      state.currentIdx++;
+      saveState();
+      renderQuestion(state.currentIdx);
+    } else {
+      openConfirmModal();
+    }
+  }
+
+  function toggleDoubt() {
+    state.doubts[state.currentIdx] = !state.doubts[state.currentIdx];
+    saveState();
+    renderQuestion(state.currentIdx);
+  }
+
+  function openConfirmModal() {
+    let answered = 0;
+    QUESTIONS.forEach((_, i) => {
+      if (isQuestionAnswered(i)) answered++;
+    });
+    const unanswered = QUESTIONS.length - answered;
+    document.getElementById("confirmSummary").innerHTML =
+      `Terjawab: <strong>${answered}</strong> soal | Belum dijawab: <strong>${unanswered}</strong> soal.<br>Yakin ingin mengakhiri ujian sekarang?`;
+    document.getElementById("confirmModal").style.display = "flex";
+  }
+
+  function closeConfirmModal() {
+    document.getElementById("confirmModal").style.display = "none";
+  }
+
+  function finishExam() {
+    closeConfirmModal();
+    state.finished = true;
+    saveState();
+    if (timerInterval) clearInterval(timerInterval);
+    renderResultScreen();
+  }
+
+  function renderResultScreen() {
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("examScreen").style.display = "none";
+    document.getElementById("resultScreen").style.display = "block";
+
+    let totalPoints = 0;
+    const maxPoints = 45 * 1 + 5 * 3; // PG @1 poin (45), B/S @3 pernyataan (15) -> total 60 poin -> skala 100
+    let pgCorrect = 0;
+    let tfSubCorrect = 0;
+
+    const letters = ["A", "B", "C", "D", "E"];
+    const reviewContainer = document.getElementById("reviewContainer");
+    reviewContainer.innerHTML = "";
+
+    QUESTIONS.forEach((qObj, idx) => {
+      const card = document.createElement("div");
+      let isAllCorrect = false;
+      let userAnsHtml = "";
+      let keyAnsHtml = "";
+
+      if (qObj.type === "pg") {
+        const uAns = state.answers[idx];
+        isAllCorrect = uAns === qObj.ans;
+        if (isAllCorrect) {
+          totalPoints += 1;
+          pgCorrect++;
+        }
+        userAnsHtml = uAns !== null ? `${letters[uAns]}. ${escapeHtml(qObj.opts[uAns])}` : "<em>Tidak dijawab</em>";
+        keyAnsHtml = `${letters[qObj.ans]}. ${escapeHtml(qObj.opts[qObj.ans])}`;
+      } else {
+        const uArr = Array.isArray(state.answers[idx]) ? state.answers[idx] : ["", "", ""];
+        let subRight = 0;
+        qObj.ans.forEach((kVal, sIdx) => {
+          if (uArr[sIdx] === kVal) {
+            subRight++;
+            totalPoints += 1;
+            tfSubCorrect++;
+          }
+        });
+        isAllCorrect = subRight === qObj.ans.length;
+        userAnsHtml = uArr.map((v, i) => `P${i + 1}: <strong>${v || "-"}</strong>`).join(" | ");
+        keyAnsHtml = qObj.ans.map((v, i) => `P${i + 1}: <strong>${v}</strong>`).join(" | ");
+      }
+
+      card.className = "review-card " + (isAllCorrect ? "correct" : "wrong");
+      card.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <strong>Soal No. ${idx + 1}</strong>
+          <span style="font-size:0.82rem; font-weight:700; color:${isAllCorrect ? "var(--success)" : "var(--danger)"};">
+            ${isAllCorrect ? "✓ TEPAT" : "✗ PERLU DIPERBAIKI"}
+          </span>
+        </div>
+        <div style="font-size:0.94rem; margin-bottom:8px; white-space:pre-line;">${escapeHtml(qObj.q)}</div>
+        ${qObj.code ? `<div class="code-box">${escapeHtml(qObj.code)}</div>` : ""}
+        <div style="font-size:0.88rem; margin-bottom:4px;">Jawaban Anda: ${userAnsHtml}</div>
+        <div style="font-size:0.88rem; color:var(--success);">Kunci Jawaban: ${keyAnsHtml}</div>
+        <div class="exp-box"><strong>Pembahasan:</strong> ${escapeHtml(qObj.exp)}</div>
+      `;
+      reviewContainer.appendChild(card);
+    });
+
+    const finalScore = Math.round((totalPoints / maxPoints) * 100);
+    document.getElementById("finalScore").textContent = finalScore;
+    document.getElementById("resultMeta").innerHTML = `
+      <div class="meta-chip"><strong>Nama:</strong> ${escapeHtml(state.student.name)}</div>
+      <div class="meta-chip"><strong>Kelas / Absen:</strong> ${escapeHtml(state.student.cls)} / ${escapeHtml(state.student.absen)}</div>
+      <div class="meta-chip"><strong>PG Benar:</strong> ${pgCorrect}/45</div>
+      <div class="meta-chip"><strong>Pernyataan B/S Benar:</strong> ${tfSubCorrect}/15</div>
+      <div class="meta-chip" style="color:var(--danger);"><strong>Keluar Aplikasi:</strong> ${state.violations} kali</div>
+    `;
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  // INISIALISASI SAAT HALAMAN DIBUKA
+  window.addEventListener("DOMContentLoaded", function() {
+    loadState();
+    if (state.started) {
+      enterExamUI();
+      if (state.locked) {
+        showLockScreen("Sesi ujian terdeteksi pernah ditinggalkan. Masukkan password pengawas untuk masuk kembali.");
+      }
+    }
+  });
+</script>
+</body>
+</html>
